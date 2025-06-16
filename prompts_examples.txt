@@ -1,0 +1,81 @@
+# SIPOC Diagram Prompts
+sipoc_prompts = """
+Create a SIPOC diagram for our manufacturing process:
+- Suppliers: List our key raw material and component suppliers
+- Inputs: Identify main materials and resources needed
+- Process: Break down the core manufacturing steps
+- Outputs: Specify the products and byproducts
+- Customers: Include both internal and external customers
+Please visualize this as a SIPOC diagram.
+"""
+
+# FMEA Analysis Prompts
+fmea_prompts = """
+Conduct an FMEA for our new product assembly line:
+- Process step: Final assembly of electronic components
+- Potential failure modes
+- Effects of each failure
+- Causes of failures
+- Current controls
+Rate severity, occurrence, and detection (1-10 scale)
+Provide RPN calculations and recommendations.
+"""
+
+# 5S Report Prompts
+five_s_prompts = """
+Generate a 5S assessment report for our production floor:
+1. Sort (Seiri): Evaluate unnecessary items
+2. Set in Order (Seiton): Check organization of tools/equipment
+3. Shine (Seiso): Assess cleanliness standards
+4. Standardize (Seiketsu): Review standard procedures
+5. Sustain (Shitsuke): Evaluate maintenance of standards
+Include scoring for each category and visualization.
+"""
+
+# 5 Whys Analysis Prompts
+five_whys_prompts = """
+Perform a 5 Whys analysis for recent product defect:
+Initial Problem: High rejection rate in final QC
+Guide through 5 levels of "Why?" questions
+- Why did this happen?
+- Why did that cause occur?
+Continue until root cause is identified
+Create visual representation of the analysis chain.
+"""
+
+# Fishbone Diagram Prompts
+fishbone_prompts = """
+Create a fishbone diagram for quality issue:
+Problem: Inconsistent product quality
+Categories to analyze:
+- Machine factors
+- Method factors
+- Material factors
+- Measurement factors
+- Environment factors
+- People factors
+Show cause-effect relationships visually.
+"""
+
+# 8D Report Prompts
+eight_d_prompts = """
+Generate an 8D report for customer complaint:
+1. Team formation
+2. Problem description
+3. Containment actions
+4. Root cause analysis
+5. Corrective actions
+6. Implement solutions
+7. Preventive measures
+8. Team recognition
+Include timeline, actions, and effectiveness measures.
+"""
+
+# Example Usage Template
+usage_example = """
+To use these prompts:
+1. Select appropriate prompt template
+2. Fill in specific details for your case
+3. Add relevant data points and metrics
+4. Request specific visualizations if needed
+"""
