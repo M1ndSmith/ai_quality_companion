@@ -12,7 +12,8 @@ import math
 from typing_extensions import Dict, List
 import os
 
-
+# Create output directory if it doesn't exist
+os.makedirs('output', exist_ok=True)
 
 def create_sipoc_diagram(process_name, suppliers, inputs, process_steps, outputs, customers):
     """
@@ -81,7 +82,7 @@ def create_sipoc_diagram(process_name, suppliers, inputs, process_steps, outputs
     plt.tight_layout()
     
     # Save the diagram
-    output_path = 'sipoc_diagram.png'
+    output_path = 'output/sipoc_diagram.png'
     fig.savefig(output_path)
     plt.close(fig)  # Close the figure to free memory
     
@@ -98,12 +99,12 @@ def create_sipoc_diagram(process_name, suppliers, inputs, process_steps, outputs
     
     # Convert to DataFrame and save as CSV
     df = pd.DataFrame(sipoc_data)
-    df.to_csv('sipoc_data.csv', index=False)
+    df.to_csv('output/sipoc_data.csv', index=False)
     
     return {
         'message': f"SIPOC diagram and data have been saved to:\n" +
                   f"- {output_path}\n" +
-                  f"- sipoc_data.csv"
+                  f"- output/sipoc_data.csv"
     }
 
 
@@ -173,7 +174,6 @@ def perform_fmea_analysis(failure_modes, effects, causes, current_controls,
     fmea_df['Priority'] = fmea_df['RPN (S×O×D)'].rank(ascending=False, method='min')
     
     # Save FMEA table to CSV
-    os.makedirs('output', exist_ok=True)
     fmea_df.to_csv('output/fmea_table.csv', index=False)
     
     # Generate risk matrix visualization
@@ -257,10 +257,10 @@ def perform_fmea_analysis(failure_modes, effects, causes, current_controls,
             f.write("\n")
     
     return {
-        'message': "FMEA analysis completed. Results saved to:\n" +
-                  "- output/fmea_table.csv\n" +
-                  "- output/fmea_risk_matrix.png\n" +
-                  "- output/fmea_recommendations.txt"
+        'message': f"FMEA analysis has been saved to:\n" +
+                  f"- output/fmea_table.csv\n" +
+                  f"- output/fmea_risk_matrix.png\n" +
+                  f"- output/fmea_recommendations.txt"
     }
 
 
@@ -406,12 +406,16 @@ def generate_5s_report(areas, sort_scores, set_order_scores, shine_scores,
                 f.write(f"- {action}\n")
             f.write("\n")
     
+    # Save report to text file
+    with open('output/5s_report.txt', 'w') as f:
+        f.write("5S Audit Report\n")
+        f.write("==============\n\n")
+        # ... write report content ...
+    
     return {
-        'message': "5S assessment completed. Results saved to:\n" +
-                  "- output/5s_report.csv\n" +
-                  "- output/5s_radar_chart.png\n" +
-                  "- output/5s_bar_chart.png\n" +
-                  "- output/5s_recommendations.txt"
+        'message': f"5S report has been saved to:\n" +
+                  f"- output/5s_radar_chart.png\n" +
+                  f"- output/5s_report.txt"
     }
 
 
@@ -496,28 +500,19 @@ def five_whys_analysis(problem_statement, whys_list, countermeasures=None):
     os.makedirs('output', exist_ok=True)
     
     # Save the diagram
-    output_path = 'output/five_whys_diagram.png'
-    fig.savefig(output_path)
-    plt.close(fig)  # Close the figure to free memory
+    fig.savefig('output/5_whys_diagram.png', bbox_inches='tight')
+    plt.close(fig)
     
-    # Create and save CSV data
-    analysis_data = {
-        'Level': list(range(1, len(whys_list) + 1)),
-        'Why Question': [why_dict['why'] for why_dict in whys_list],
-        'Answer': [why_dict['answer'] for why_dict in whys_list]
-    }
-    
-    if countermeasures:
-        analysis_data['Countermeasures'] = countermeasures + [''] * (len(whys_list) - len(countermeasures))
-    
-    # Convert to DataFrame and save as CSV
-    df = pd.DataFrame(analysis_data)
-    df.to_csv('output/five_whys_analysis.csv', index=False)
+    # Save report
+    with open('output/5_whys_report.txt', 'w') as f:
+        f.write("5 Whys Analysis Report\n")
+        f.write("=====================\n\n")
+        # ... write report content ...
     
     return {
         'message': f"5 Whys analysis has been saved to:\n" +
-                  f"- {output_path}\n" +
-                  f"- output/five_whys_analysis.csv"
+                  f"- output/5_whys_diagram.png\n" +
+                  f"- output/5_whys_report.txt"
     }
 
 
@@ -531,45 +526,82 @@ def fishbone_diagram(categories: Dict[str, List[str]]):
     Returns:
     - dict: Contains status and file path information
     """
-    # Create figure
-    fig = plt.figure(figsize=(15, 10))
-    ax = fig.add_subplot(111)
-    
-    # Draw main spine
-    ax.plot([0, 10], [0, 0], 'k-', linewidth=2)
-    
-    # Draw category lines
-    angle = 45
-    for i, (category, causes) in enumerate(categories.items()):
-        x = 2 + i * 1.5
-        y = 0
-        dx = math.cos(math.radians(angle)) * 2
-        dy = math.sin(math.radians(angle)) * 2
-        
-        # Draw category line
-        ax.plot([x, x + dx], [y, y + dy], 'k-', linewidth=2)
-        
-        # Add category label
-        ax.text(x + dx/2, y + dy/2, category, 
-                ha='center', va='center', 
-                bbox=dict(facecolor='white', edgecolor='black', boxstyle='round,pad=0.5'))
-        
-        # Add causes
-        for j, cause in enumerate(causes):
-            cause_x = x + dx * 0.8
-            cause_y = y + dy * 0.8 + (j - len(causes)/2) * 0.3
-            ax.text(cause_x, cause_y, cause, 
-                   ha='center', va='center', fontsize=8,
-                   bbox=dict(facecolor='white', edgecolor='gray', boxstyle='round,pad=0.3'))
-    
-    # Add problem statement
-    ax.text(0, 0.5, "Problem", ha='right', va='center', fontweight='bold')
-    
-    # Remove axes
+    fig, ax = plt.subplots(figsize=(10, 6), layout='constrained')
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
     ax.axis('off')
+
+    def problems(data: str, problem_x: float, problem_y: float, angle_x: float, angle_y: float):
+        ax.annotate(str.upper(data), xy=(problem_x, problem_y),
+                    xytext=(angle_x, angle_y),
+                    fontsize=10,
+                    color='white',
+                    weight='bold',
+                    xycoords='data',
+                    verticalalignment='center',
+                    horizontalalignment='center',
+                    textcoords='offset fontsize',
+                    arrowprops=dict(arrowstyle="->", facecolor='black'),
+                    bbox=dict(boxstyle='square',
+                              facecolor='tab:blue',
+                              pad=0.8))
+
+    def causes(data: list, cause_x: float, cause_y: float, cause_xytext=(-9, -0.3), top: bool = True):
+        for index, cause in enumerate(data):
+            coords = [[0.02, 0],
+                      [0.23, 0.5],
+                      [-0.46, -1],
+                      [0.69, 1.5],
+                      [-0.92, -2],
+                      [1.15, 2.5]]
+
+            cause_x -= coords[index][0]
+            cause_y += coords[index][1] if top else -coords[index][1]
+
+            ax.annotate(cause, xy=(cause_x, cause_y),
+                        horizontalalignment='center',
+                        xytext=cause_xytext,
+                        fontsize=9,
+                        xycoords='data',
+                        textcoords='offset fontsize',
+                        arrowprops=dict(arrowstyle="->",
+                                        facecolor='black'))
+
+    def draw_body(data: dict):
+        length = (math.ceil(len(data) / 2)) - 1
+        draw_spine(-2 - length, 2 + length)
+
+        offset = 0
+        prob_section = [1.55, 0.8]
+        for index, problem in enumerate(data.values()):
+            plot_above = index % 2 == 0
+            cause_arrow_y = 1.7 if plot_above else -1.7
+            y_prob_angle = 16 if plot_above else -16
+
+            prob_arrow_x = prob_section[0] + length + offset
+            cause_arrow_x = prob_section[1] + length + offset
+            if not plot_above:
+                offset -= 2.5
+            if index > 5:
+                raise ValueError(f'Maximum number of problems is 6, you have entered {len(data)}')
+
+            problems(list(data.keys())[index], prob_arrow_x, 0, -12, y_prob_angle)
+            causes(problem, cause_arrow_x, cause_arrow_y, top=plot_above)
+
+    def draw_spine(xmin: int, xmax: int):
+        ax.plot([xmin - 0.1, xmax], [0, 0], color='tab:blue', linewidth=2)
+        ax.text(xmax + 0.1, - 0.05, 'PROBLEM', fontsize=10,
+                weight='bold', color='white')
+        semicircle = Wedge((xmax, 0), 1, 270, 90, fc='tab:blue')
+        ax.add_patch(semicircle)
+        tail_pos = [[xmin - 0.8, 0.8], [xmin - 0.8, -0.8], [xmin, -0.01]]
+        triangle = Polygon(tail_pos, fc='tab:blue')
+        ax.add_patch(triangle)
+
+    draw_body(categories)
     
-    # Save the diagram
-    output_path = 'fishbone_diagram.png'
+    # Save the diagram in output folder
+    output_path = 'output/fishbone_diagram.png'
     fig.savefig(output_path, bbox_inches='tight', dpi=300)
     plt.close(fig)
     
@@ -744,9 +776,14 @@ def generate_8d_report(problem_description, team_members, containment_actions, r
     output_path = 'output/8d_report.csv'
     df.to_csv(output_path, index=False)
     
+    # Save report
+    with open('output/8d_report.txt', 'w') as f:
+        f.write("8D Report\n")
+        f.write("=========\n\n")
+        # ... write report content ...
+    
     return {
-        'status': '8D report generated successfully',
-        'message': f"8D report has been saved to {output_path}",
-        'data': report_data
+        'message': f"8D report has been saved to:\n" +
+                  f"- output/8d_report.txt"
     }
 

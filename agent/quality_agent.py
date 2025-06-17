@@ -3,12 +3,27 @@ from quality_tools.tools import *
 from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
-
-
+from typing import Optional
 
 class QualityManagementAgent:
-    def __init__(self, model="groq:llama3-8b-8192"):
+    def __init__(self, model: Optional[str] = "groq:llama3-8b-8192", api_key: Optional[str] = None):
+        """
+        Initialize the Quality Management Agent.
+        
+        Parameters:
+        - model (str): The LLM model to use. Options:
+            - "groq:llama3-8b-8192" (default)
+            - "openai:gpt-4"
+            - "openai:gpt-3.5-turbo"
+            - "anthropic:claude-3-opus"
+            - "anthropic:claude-3-sonnet"
+        - api_key (str): API key for the LLM provider. If None, will look for environment variables:
+            - GROQ_API_KEY
+            - OPENAI_API_KEY
+            - ANTHROPIC_API_KEY
+        """
         self.model = model
+        self.api_key = api_key
         self.memory = MemorySaver()
         self.tools = [
             create_sipoc_diagram, 
