@@ -1,4 +1,4 @@
-![Project Banner]![d290f232-d433-4a21-abac-1a618d89f7a3](https://github.com/user-attachments/assets/026a13e3-1afc-43a0-bd49-3016985f93e5)
+![d290f232-d433-4a21-abac-1a618d89f7a3](https://github.com/user-attachments/assets/026a13e3-1afc-43a0-bd49-3016985f93e5)
 
 
 # AI Quality Companion
@@ -172,6 +172,9 @@ ai_quality_companion/
 - Groq API access (or you favourite llm)
 - Matplotlib
 - Additional dependencies in requirements.txt
+
+## Note:
+The output/ folder is not included in this repository. This folder is generated locally when you run the AI Quality Companion. It contains all the generated files, such as diagrams (PNG), data files (CSV), and reports (TXT). You can create this folder manually or let the application create it for you when you run the first analysis.
 
 ## Contributing
 
