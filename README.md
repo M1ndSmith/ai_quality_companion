@@ -159,7 +159,7 @@ ai_quality_companion/
 
 - Python 3.8+
 - LangGraph
-- Groq API access
+- Groq API access (or you favourite llm)
 - Matplotlib
 - Additional dependencies in requirements.txt
 
