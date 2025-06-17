@@ -1,3 +1,6 @@
+![Project Banner]![d290f232-d433-4a21-abac-1a618d89f7a3](https://github.com/user-attachments/assets/026a13e3-1afc-43a0-bd49-3016985f93e5)
+
+
 # AI Quality Companion
 
 An ai assistant for quality management processes, combining LLM capabilities with lean management tools.
@@ -154,6 +157,13 @@ ai_quality_companion/
 ├── setup.py
 └── README.md
 ```
+
+## OUTPUT EXAMPLE:
+### FISHBONE DIAGRAM
+![fishbone_diagram](https://github.com/user-attachments/assets/817d6df4-43a9-4e55-b6c2-96671062c6f1)
+## FMEA MATRIX of Risk
+![fmea_risk_matrix](https://github.com/user-attachments/assets/6c9c9a30-3199-444c-bc0d-57ce9a191a07)
+
 
 ## Requirements
 
